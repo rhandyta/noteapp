@@ -2,7 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import Header from "./components/Header";
 import SetupRoutes from "./routes/SetupRoutes";
-
+import "react-toastify/dist/ReactToastify.css";
 function App() {
     return (
         <main className="flex min-h-screen  w-full flex-col bg-four">
