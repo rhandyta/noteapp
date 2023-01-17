@@ -9,9 +9,10 @@ function useLogin() {
     const navigate = useNavigate();
     const login = async (email, password) => {
         try {
-            let response = await fetch(`${import.meta.env.VITE_API_URL}login`, {
+            await fetch(`${import.meta.env.VITE_API_URL}login`, {
                 method: "POST",
                 headers: {
+                    Accept: "application/json",
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                 },
@@ -19,31 +20,35 @@ function useLogin() {
                     email,
                     password,
                 }),
-            });
-            let data = await response.json();
-            if (data.success) {
-                dispatch(userLogin(data));
-                toast.success(`🦄 ${data.message}!`, {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                return navigate("dashboard");
-            }
-            return toast.error(`🦄 Upss, ${data.messages}!`, {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
+            }).then(async (res) => {
+                let data = await res.json();
+                if (data.success) {
+                    toast.success(`🦄 ${data.message}!`, {
+                        position: "top-center",
+                        autoClose: 1500,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
+                    setTimeout(() => {
+                        dispatch(userLogin(data));
+                        return navigate("dashboard", { replace: true });
+                    }, 2500);
+                } else {
+                    return toast.error(`🦄 Upss, ${data.messages}!`, {
+                        position: "top-center",
+                        autoClose: 1500,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                    });
+                }
             });
         } catch (error) {
             toast.error("🦄 Upss, Something went wrong!", {
