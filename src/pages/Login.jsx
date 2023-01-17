@@ -95,6 +95,7 @@ function Login() {
                                     ) : (
                                         <Button
                                             type="submit"
+                                            className="w-full bg-sky-400 py-2 text-white shadow-sm active:bg-sky-600"
                                             disabled={
                                                 !props.isValid ||
                                                 props.isSubmitting ||
