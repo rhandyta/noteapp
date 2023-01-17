@@ -20,7 +20,7 @@ function Header() {
         <>
             <Toast />
             <header
-                className="mx-auto mt-10 flex h-20 w-9/12 items-center justify-between rounded-md bg-white p-3 shadow-md 
+                className="mx-auto mt-10 flex h-20 w-11/12 items-center justify-between rounded-md bg-white p-3 shadow-md md:w-9/12 
         "
             >
                 <Link
