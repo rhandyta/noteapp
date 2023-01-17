@@ -5,9 +5,11 @@ import SetupRoutes from "./routes/SetupRoutes";
 
 function App() {
     return (
-        <main className="w-full min-h-screen  bg-sky-50 flex flex-col">
+        <main className="flex min-h-screen  w-full flex-col bg-four">
             <Header />
-            <SetupRoutes />
+            <div className="mx-auto mt-10 w-9/12 rounded-md bg-white p-5 shadow-md">
+                <SetupRoutes />
+            </div>
         </main>
     );
 }
