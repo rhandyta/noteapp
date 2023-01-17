@@ -7,3 +7,7 @@
 body {
     @apply font-poppins;
 }
+
+button[disabled] {
+    @apply bg-slate-500 text-white active:bg-slate-500;
+}

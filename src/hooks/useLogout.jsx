@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { toastError, toastSuccess } from "../components/Toast";
 import { userLogout } from "../features/userSlice";
 
 function useLogout() {
@@ -17,32 +18,12 @@ function useLogout() {
                 },
             }).then(async (res) => {
                 let data = await res.json();
-                toast.success(`🦄 ${data.message}!`, {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                setTimeout(() => {
-                    dispatch(userLogout());
-                    return navigate("/", { replace: true });
-                }, 2500);
+                toastSuccess(data.message);
+                dispatch(userLogout());
+                return navigate("/", { replace: true });
             });
         } catch (error) {
-            toast.error("🦄 Upss, Something went wrong!", {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
+            toastError();
         }
     };
     return logout;

@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { toastError, toastSuccess } from "../components/Toast";
 import { userLogin } from "../features/userSlice";
 
 function useLogin() {
@@ -22,45 +23,17 @@ function useLogin() {
                 }),
             }).then(async (res) => {
                 let data = await res.json();
+                console.log(data);
                 if (data.success) {
-                    toast.success(`🦄 ${data.message}!`, {
-                        position: "top-center",
-                        autoClose: 1500,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "colored",
-                    });
-                    setTimeout(() => {
-                        dispatch(userLogin(data));
-                        return navigate("dashboard", { replace: true });
-                    }, 2500);
+                    toastSuccess(data.message);
+                    dispatch(userLogin(data));
+                    return navigate("dashboard", { replace: true });
                 } else {
-                    return toast.error(`🦄 Upss, ${data.messages}!`, {
-                        position: "top-center",
-                        autoClose: 1500,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "colored",
-                    });
+                    return toastError(data.message);
                 }
             });
         } catch (error) {
-            toast.error("🦄 Upss, Something went wrong!", {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
+            toastError(error.message);
         }
     };
     return login;
