@@ -23,7 +23,6 @@ function useLogin() {
                 }),
             }).then(async (res) => {
                 let data = await res.json();
-                console.log(data);
                 if (data.success) {
                     toastSuccess(data.message);
                     dispatch(userLogin(data));

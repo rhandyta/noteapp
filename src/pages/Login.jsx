@@ -1,8 +1,8 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import React, { useState } from "react";
-import { ToastContainer } from "react-toastify";
 import * as yup from "yup";
 import Button from "../components/Button";
+import Input from "../components/Input";
 import Spinner from "../components/Spinner";
 import useLogin from "../hooks/useLogin";
 
@@ -24,7 +24,6 @@ function Login() {
         await login(values.email, values.password);
         setIsLoading(false);
     };
-
     return (
         <>
             <div className="flex flex-col gap-1">
@@ -43,7 +42,6 @@ function Login() {
                     validationSchema={validationSchema}
                 >
                     {(props) => {
-                        console.log(props);
                         return (
                             <Form
                                 autoComplete="off"
@@ -56,11 +54,11 @@ function Login() {
                                     >
                                         E-mail
                                     </label>
-                                    <Field
+                                    <Input
                                         type="email"
                                         id="email"
                                         name="email"
-                                        className="trasition block w-full rounded border border-four p-1 outline-none duration-300 focus:ring-1 focus:ring-secondary"
+                                        className="trasition block w-full rounded border border-third p-1 outline-none duration-300 focus:ring-1 focus:ring-secondary"
                                     />
                                     <ErrorMessage name="email">
                                         {(error) => (
@@ -77,11 +75,11 @@ function Login() {
                                     >
                                         Password
                                     </label>
-                                    <Field
+                                    <Input
                                         type="password"
                                         id="password"
                                         name="password"
-                                        className="block w-full rounded border border-four p-1 outline-none transition duration-300 focus:ring-1 focus:ring-secondary"
+                                        className="block w-full rounded border border-third  p-1 outline-none transition duration-300 focus:ring-1 focus:ring-secondary"
                                     />
                                     <ErrorMessage name="password">
                                         {(error) => (
