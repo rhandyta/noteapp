@@ -1,24 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Card() {
-    let words =
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam veritatis amet molestias vero dicta, debitis neque facilis quam explicabo.";
-    let word =
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam esse architecto rerum cum perspiciatis inventore ab, tempora perferendis illo, nisi ut. Rem maiores doloremque quas quod molestiae deleniti enim facilis.lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, modi. Reiciendis officia quisquam dolorem fuga cum, voluptatem sit rerum quos est ea adipisci libero consequuntur dignissimos porro, blanditiis dolores id.";
+function Card({ title, body, created_at, slug, user_id }) {
     return (
-        <article className="flex flex-col divide-y-2 rounded-md border border-slate-200 p-3 antialiased shadow-md">
-            <div className="mb-2">
-                <h1 className="whitespace text-xl font-semibold text-slate-700 first-letter:uppercase">
-                    {words.slice(0, 25)}...
-                </h1>
-                <p className=" text-sm font-thin text-slate-400">
-                    sunday, january 15, 23
+        <article className="h-75 flex flex-col justify-between divide-y-2 rounded-md border border-slate-200 p-3 antialiased shadow-md transition-all duration-300 hover:scale-105">
+            <div className="mb-2 basis-1/12">
+                <Link to="#">
+                    <h1 className="whitespace text-xl font-semibold text-slate-700 first-letter:uppercase hover:text-slate-500">
+                        {title.slice(0, 40)}...
+                    </h1>
+                </Link>
+                <p className="text-sm font-thin text-slate-500 ">
+                    {new Date(created_at).toDateString()} - {user_id}
                 </p>
             </div>
-            <div className="whitespace break-words text-justify font-medium text-primary">
-                <p className="py-2">{word.slice(0, 250)}...</p>
+            <div className="whitespace basis-9/12 break-words text-justify font-medium text-primary">
+                <p className="py-2">{body.slice(0, 250)}...</p>
             </div>
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="basis2/12 flex items-center justify-end gap-2 pt-2">
                 <div className="h-6 w-6 rounded-sm bg-slate-400"></div>
                 <div className="h-6 w-6 rounded-sm bg-slate-400"></div>
                 <div className="h-6 w-6 rounded-sm bg-slate-400"></div>
