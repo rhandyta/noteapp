@@ -20,10 +20,11 @@ function useGetAllNotes({ setIsLoading }) {
                     },
                 }).then(async (res) => {
                     let tmpNotes = [];
-                    let response = await res.json();
-                    if (response.notes.length > 0) {
-                        tmpNotes = response.notes.map((note) => note);
+                    let { notes } = await res.json();
+                    if (notes.data.length > 0) {
+                        tmpNotes = notes.data.map((note) => note);
                         setNotes(tmpNotes);
+                        console.log(notes);
                         return await setIsLoading(false);
                     }
                     await setIsLoading(false);
