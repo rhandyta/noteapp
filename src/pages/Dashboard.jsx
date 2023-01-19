@@ -13,7 +13,7 @@ function Dashboard() {
     const [isLoading, setIsLoading] = useState(false);
     const getAllNotes = useGetAllNotes({ setIsLoading });
     const [allNotes, setAllNotes] = useState([]);
-    let offset = 2;
+    let page = 2;
 
     function handleScroll() {
         const top = document.documentElement.scrollTop;
@@ -21,7 +21,7 @@ function Dashboard() {
         const height = document.documentElement.scrollHeight;
 
         if (top + windowPixel + 1 >= height) {
-            fetch(`${import.meta.env.VITE_API_URL}notes?page=${offset}`, {
+            fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
                 method: "GET",
                 headers: {
                     Authorization: `${auth.type} ${auth.token}`,
@@ -40,7 +40,7 @@ function Dashboard() {
                     setIsLoading(false);
                     return toastError(error.message);
                 });
-            offset += 1;
+            page += 1;
         }
     }
 
