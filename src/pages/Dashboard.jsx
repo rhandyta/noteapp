@@ -29,12 +29,17 @@ function Dashboard() {
                     Accept: "application/json",
                     "Access-Control-Allow-Origin": "*",
                 },
-            }).then(async (res) => {
-                const newData = [];
-                let { notes } = await res.json();
-                notes.data.forEach((n) => newData.push(n));
-                setAllNotes((oldN) => [...oldN, ...newData]);
-            });
+            })
+                .then(async (res) => {
+                    const newData = [];
+                    let { notes } = await res.json();
+                    notes.data.forEach((n) => newData.push(n));
+                    setAllNotes((oldN) => [...oldN, ...newData]);
+                })
+                .catch((error) => {
+                    setIsLoading(false);
+                    return toastError(error.message);
+                });
             offset += 1;
         }
     }
