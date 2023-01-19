@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toastError, toastSuccess } from "../components/Toast";
 
-function useGetAllNotes({ setIsLoading, page = 1 }) {
+function useGetAllNotes({ setIsLoading }) {
     const auth = useSelector((state) => state.user);
     const [notes, setNotes] = useState([]);
 
@@ -10,18 +10,15 @@ function useGetAllNotes({ setIsLoading, page = 1 }) {
         const getAllNote = async () => {
             try {
                 await setIsLoading(true);
-                await fetch(
-                    `${import.meta.env.VITE_API_URL}notes?page=${page}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `${auth.type} ${auth.token}`,
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                            "Access-Control-Allow-Origin": "*",
-                        },
-                    }
-                ).then(async (res) => {
+                await fetch(`${import.meta.env.VITE_API_URL}notes?page=1`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `${auth.type} ${auth.token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                    },
+                }).then(async (res) => {
                     let tmpNotes = [];
                     let { notes } = await res.json();
                     if (notes.data.length > 0) {
@@ -34,14 +31,12 @@ function useGetAllNotes({ setIsLoading, page = 1 }) {
                 });
             } catch (error) {
                 await setIsLoading(false);
-                return toastError(error.message);
+                return toastError("Something went wrong");
             }
         };
 
         return () => {
-            if (notes.length === 0) {
-                getAllNote();
-            }
+            getAllNote();
         };
     }, []);
     return notes;
