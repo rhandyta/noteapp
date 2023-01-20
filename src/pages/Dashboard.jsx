@@ -7,12 +7,14 @@ import useGetAllNotes from "../hooks/useGetAllNotes";
 import Skeleton from "../components/Skeleton";
 import { toastError } from "../components/Toast";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
     const auth = useSelector((auth) => auth.user);
     const [isLoading, setIsLoading] = useState(false);
     const getAllNotes = useGetAllNotes({ setIsLoading });
     const [allNotes, setAllNotes] = useState([]);
+    const navigate = useNavigate();
     let page = 2;
 
     function handleScroll() {
@@ -48,14 +50,19 @@ function Dashboard() {
         if (allNotes.length === 0) {
             setAllNotes(getAllNotes);
         }
+        window.addEventListener("scroll", handleScroll);
         return () => {
-            window.addEventListener("scroll", handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, [getAllNotes]);
     return (
         <>
             <div className="flex items-center justify-between">
-                <Button text="Add Note" className=" p-2 text-white" />
+                <Button
+                    text="Add Note"
+                    className=" p-2 text-white"
+                    onClick={(e) => navigate("add-note")}
+                />
                 <Formik>
                     <Form>
                         <Input
