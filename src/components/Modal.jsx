@@ -22,7 +22,7 @@ const Modal = ({
                 isOpen ? "block" : "hidden"
             } flex w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full`}
         >
-            <div className="relative h-full w-full max-w-2xl md:h-auto">
+            <div className={`relative h-full w-full max-w-2xl md:h-auto`}>
                 <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
                     <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -106,29 +106,29 @@ const Modal = ({
                                                                 "body",
                                                                 data
                                                             );
-                                                            console.log({
-                                                                event,
-                                                                editor,
-                                                                data,
-                                                            });
+                                                            // console.log({
+                                                            //     event,
+                                                            //     editor,
+                                                            //     data,
+                                                            // });
                                                         }}
                                                         onBlur={(
                                                             event,
                                                             editor
                                                         ) => {
-                                                            console.log(
-                                                                "Blur.",
-                                                                editor
-                                                            );
+                                                            // console.log(
+                                                            //     "Blur.",
+                                                            //     editor
+                                                            // );
                                                         }}
                                                         onFocus={(
                                                             event,
                                                             editor
                                                         ) => {
-                                                            console.log(
-                                                                "Focus.",
-                                                                editor
-                                                            );
+                                                            // console.log(
+                                                            //     "Focus.",
+                                                            //     editor
+                                                            // );
                                                         }}
                                                         name="body"
                                                         id="body"
