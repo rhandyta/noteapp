@@ -2,7 +2,7 @@ import HTMLReactParser from "html-react-parser";
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Card({ title, body, created_at, slug, user_id }) {
+function Card({ title, body, created_at, slug, user }) {
     return (
         <article className="h-75 flex flex-col justify-between divide-y-2 rounded-md border border-slate-200 p-3 antialiased shadow-md transition-all duration-300 hover:scale-105">
             <div className="mb-2 basis-1/12">
@@ -12,7 +12,7 @@ function Card({ title, body, created_at, slug, user_id }) {
                     </h1>
                 </Link>
                 <p className="text-sm font-thin text-slate-500 ">
-                    {new Date(created_at).toDateString()} - {user_id}
+                    {new Date(created_at).toDateString()} - {user.name}
                 </p>
             </div>
             <div className="whitespace basis-9/12 break-words text-justify font-medium text-primary">
