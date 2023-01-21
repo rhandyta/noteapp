@@ -24,11 +24,12 @@ function Card({ title, body, created_at, slug, user }) {
                         : HTMLReactParser(body)}
                 </div>
             </div>
-            <div className="basis2/12 flex items-center justify-evenly gap-2 px-20 pt-2">
-                {iconSvg.map((icon) => {
+            <div className="flex basis-2/12 items-center justify-evenly gap-2 px-40 pt-2 md:px-20">
+                {iconSvg.map((icon, index) => {
                     return (
                         <div
                             className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                            key={index}
                         >
                             {icon.img}
                         </div>

@@ -77,6 +77,7 @@ function Dashboard() {
 
     const onSubmit = async (values, props) => {
         try {
+            setIsLoading(true);
             const { title, body, visible, archive } = values;
             const data = {
                 title,
@@ -84,7 +85,6 @@ function Dashboard() {
                 visible: visible[0],
                 archive: archive[0],
             };
-            console.log(data);
             await fetch(`${import.meta.env.VITE_API_URL}notes`, {
                 method: "POST",
                 headers: {
@@ -103,12 +103,15 @@ function Dashboard() {
                     initialValues.archive = 0;
                     setIsOpen(!open);
                     toastSuccess(response.message);
+                    setIsLoading(false);
                 })
                 .catch((error) => {
                     toastError(error.message);
+                    setIsLoading(false);
                 });
         } catch (error) {
             toastError(error.message);
+            setIsLoading(false);
         }
     };
     return (
@@ -121,6 +124,7 @@ function Dashboard() {
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     Input={Input}
+                    isLoading={isLoading}
                 />
             )}
             <div className={`flex items-center justify-between  `}>

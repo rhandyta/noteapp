@@ -5,14 +5,17 @@ import Input from "./Input";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Button from "./Button";
+import Spinner from "./Spinner";
 
-const Modal = ({
-    isOpen,
-    onClose,
-    onSubmit,
-    initialValues,
-    validationSchema,
-}) => {
+const Modal = (props) => {
+    const {
+        isOpen,
+        onClose,
+        onSubmit,
+        initialValues,
+        validationSchema,
+        isLoading,
+    } = props;
     return (
         <div
             id="defaultModal"
@@ -26,7 +29,7 @@ const Modal = ({
                 <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
                     <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                            Terms of Service
+                            Add Note
                         </h3>
                         <button
                             type="button"
@@ -74,8 +77,18 @@ const Modal = ({
                                                         htmlFor="name"
                                                         className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
                                                     >
-                                                        Title
+                                                        Title{" "}
+                                                        <span className="text-xs font-thin text-red-600">
+                                                            *
+                                                        </span>
                                                     </label>
+                                                    <ErrorMessage name="title">
+                                                        {(error) => (
+                                                            <span className="text-xs text-red-600">
+                                                                {error}
+                                                            </span>
+                                                        )}
+                                                    </ErrorMessage>
                                                 </div>
                                             </div>
                                             <div className="grid h-64 md:grid-cols-1 md:gap-6">
@@ -120,6 +133,7 @@ const Modal = ({
                                                             //     "Blur.",
                                                             //     editor
                                                             // );
+                                                            // console.log(event);
                                                         }}
                                                         onFocus={(
                                                             event,
@@ -134,8 +148,14 @@ const Modal = ({
                                                         id="body"
                                                         className="peer block min-h-full w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500"
                                                         placeholder=" "
-                                                        required
                                                     />
+                                                    <ErrorMessage name="body">
+                                                        {(error) => (
+                                                            <span className="text-xs text-red-600">
+                                                                {error}
+                                                            </span>
+                                                        )}
+                                                    </ErrorMessage>
                                                 </div>
                                             </div>
                                             <div className="mb-2 flex flex-row items-center gap-5">
@@ -172,20 +192,29 @@ const Modal = ({
                                             </div>
                                         </>
                                         <div className="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600">
-                                            <Button
-                                                data-modal-hide="defaultModal"
-                                                type="submit"
-                                                className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                            >
-                                                I accept
-                                            </Button>
+                                            {isLoading ? (
+                                                <Spinner />
+                                            ) : (
+                                                <Button
+                                                    data-modal-hide="defaultModal"
+                                                    type="submit"
+                                                    className="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                    disabled={
+                                                        !props.isValid ||
+                                                        props.isSubmitting ||
+                                                        !props.dirty
+                                                    }
+                                                >
+                                                    Add Note
+                                                </Button>
+                                            )}
                                             <Button
                                                 onClick={() => onClose()}
                                                 data-modal-hide="defaultModal"
                                                 type="button"
-                                                className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+                                                className="rounded-lg border border-gray-200 bg-yellow-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-700 hover:text-white focus:z-10 focus:outline-none  active:bg-white active:text-black dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
                                             >
-                                                Decline
+                                                Close
                                             </Button>
                                         </div>
                                     </Form>

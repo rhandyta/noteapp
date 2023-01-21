@@ -9,7 +9,7 @@ body {
 }
 
 button[disabled] {
-    @apply bg-slate-500 text-white active:bg-slate-500;
+    @apply bg-slate-500 text-white hover:bg-slate-500 active:bg-slate-500;
 }
 
 .ck.ck-content ul,
