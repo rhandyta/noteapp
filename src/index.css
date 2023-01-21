@@ -11,3 +11,22 @@ body {
 button[disabled] {
     @apply bg-slate-500 text-white active:bg-slate-500;
 }
+
+.ck.ck-content ul,
+.ck.ck-content ul li {
+    list-style-type: inherit;
+}
+.ck.ck-content ul {
+    padding-left: 30px;
+}
+
+.ck.ck-content ol,
+.ck.ck-content ol li {
+    list-style-type: decimal;
+}
+.ck.ck-content ol {
+    padding-left: 30px;
+}
+.ck-editor__editable_inline {
+    padding: 0 10px !important;
+}

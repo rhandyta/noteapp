@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { Formik, Form, ErrorMessage } from "formik";
+import * as yup from "yup";
 import Card from "../components/Card";
 import useGetAllNotes from "../hooks/useGetAllNotes";
 import Skeleton from "../components/Skeleton";
-import { toastError } from "../components/Toast";
+import { toastError, toastSuccess } from "../components/Toast";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import Modal from "../components/Modal";
 
 function Dashboard() {
     const auth = useSelector((auth) => auth.user);
     const [isLoading, setIsLoading] = useState(false);
     const getAllNotes = useGetAllNotes({ setIsLoading });
     const [allNotes, setAllNotes] = useState([]);
-    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
     let page = 2;
 
     function handleScroll() {
@@ -55,17 +56,83 @@ function Dashboard() {
             window.removeEventListener("scroll", handleScroll);
         };
     }, [getAllNotes]);
+
+    function handleClose() {
+        setIsOpen(!isOpen);
+    }
+
+    const initialValues = {
+        title: "",
+        body: "",
+        visible: 0,
+        archive: 0,
+    };
+
+    const validationSchema = yup.object({
+        title: yup.string().min(3).max(150).required().trim(),
+        // body: yup.required(),
+        // visible: yup.boolean().required(),
+        // archive: yup.boolean().required(),
+    });
+
+    const onSubmit = async (values, props) => {
+        try {
+            const { title, body, visible, archive } = values;
+            const data = {
+                title,
+                body,
+                visible: visible[0],
+                archive: archive[0],
+            };
+            console.log(data);
+            await fetch(`${import.meta.env.VITE_API_URL}notes`, {
+                method: "POST",
+                headers: {
+                    Authorization: `${auth.type} ${auth.token}`,
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(data),
+            })
+                .then(async (res) => {
+                    let response = await res.json();
+                    initialValues.title = "";
+                    initialValues.body = "";
+                    initialValues.visible = 0;
+                    initialValues.archive = 0;
+                    setIsOpen(!open);
+                    toastSuccess(response.message);
+                })
+                .catch((error) => {
+                    toastError(error.message);
+                });
+        } catch (error) {
+            toastError(error.message);
+        }
+    };
     return (
         <>
+            {isOpen && (
+                <Modal
+                    isOpen={isOpen}
+                    onClose={handleClose}
+                    onSubmit={onSubmit}
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    Input={Input}
+                />
+            )}
             <div className="flex items-center justify-between">
                 <Button
                     text="Add Note"
                     className=" p-2 text-white"
-                    onClick={(e) => navigate("add-note")}
+                    onClick={() => setIsOpen(!isOpen)}
                 />
                 <Formik>
                     <Form>
                         <Input
+                            name="title"
                             className="w-44 md:w-60 xl:w-96"
                             placeholder="Search by title"
                         />
