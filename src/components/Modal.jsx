@@ -108,7 +108,9 @@ const Modal = (props) => {
                                                             );
                                                         }}
                                                         editor={ClassicEditor}
-                                                        data=""
+                                                        data={
+                                                            initialValues.body
+                                                        }
                                                         onChange={(
                                                             event,
                                                             editor
@@ -134,6 +136,10 @@ const Modal = (props) => {
                                                             //     editor
                                                             // );
                                                             // console.log(event);
+                                                            props.setFieldTouched(
+                                                                "body",
+                                                                true
+                                                            );
                                                         }}
                                                         onFocus={(
                                                             event,
