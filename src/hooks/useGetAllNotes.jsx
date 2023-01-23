@@ -34,9 +34,7 @@ function useGetAllNotes({ setIsLoading }) {
     };
 
     useEffect(() => {
-        return () => {
-            getAllNote();
-        };
+        getAllNote();
     }, []);
     return notes;
 }

@@ -77,9 +77,6 @@ function Dashboard() {
 
     const validationSchema = yup.object({
         title: yup.string().min(3).max(150).required().trim(),
-        // body: yup.required(),
-        // visible: yup.boolean().required(),
-        // archive: yup.boolean().required(),
     });
 
     const onSubmit = async (values, props) => {
