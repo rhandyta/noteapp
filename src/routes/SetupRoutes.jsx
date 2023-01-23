@@ -11,7 +11,7 @@ function SetupRoutes() {
         <Routes>
             <Route element={<PrivateRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/details/:id" element={<Detail />} />
+                <Route path="/detail/:id" element={<Detail />} />
             </Route>
             <Route element={<ProtectedRoute />}>
                 <Route index element={<Login />} />
