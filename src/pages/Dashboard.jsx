@@ -13,6 +13,7 @@ import Modal from "../components/Modal";
 function Dashboard() {
     const auth = useSelector((auth) => auth.user);
     const [isLoading, setIsLoading] = useState(false);
+    const [loadedPages, setLoadedPages] = useState([]);
     const getAllNotes = useGetAllNotes({ setIsLoading });
     const [allNotes, setAllNotes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -22,28 +23,34 @@ function Dashboard() {
         const top = document.documentElement.scrollTop;
         const windowPixel = window.innerHeight;
         const height = document.documentElement.scrollHeight;
-
         if (top + windowPixel + 1 >= height) {
-            fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `${auth.type} ${auth.token}`,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
-            })
-                .then(async (res) => {
-                    const newData = [];
-                    let { notes } = await res.json();
-                    notes.data.forEach((n) => newData.push(n));
-                    setAllNotes((oldN) => [...oldN, ...newData]);
+            if (!loadedPages.includes(page)) {
+                setLoadedPages([...loadedPages, page]);
+                fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `${auth.type} ${auth.token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "Access-Control-Allow-Origin": "*",
+                    },
                 })
-                .catch((error) => {
-                    setIsLoading(false);
-                    return toastError(error.message);
-                });
-            page += 1;
+                    .then(async (res) => {
+                        const newData = [];
+                        let { notes } = await res.json();
+                        notes.data.forEach((n) => {
+                            if (!allNotes.find((note) => note.id === n.id)) {
+                                newData.push(n);
+                            }
+                        });
+                        setAllNotes((oldN) => [...oldN, ...newData]);
+                    })
+                    .catch((error) => {
+                        setIsLoading(false);
+                        return toastError(error.message);
+                    });
+                page += 1;
+            }
         }
     }
 
