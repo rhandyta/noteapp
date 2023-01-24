@@ -113,7 +113,7 @@ function Dashboard() {
                 })
                 .catch((error) => {
                     setIsLoading(false);
-                    return toastError(error.message);
+                    return toastError(error.messages);
                 });
         } catch (error) {
             setIsLoading(false);
