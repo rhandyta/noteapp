@@ -56,16 +56,6 @@ function Dashboard() {
         }
     }
 
-    useEffect(() => {
-        if (allNotes.length === 0) {
-            setAllNotes(getAllNotes);
-        }
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, [getAllNotes]);
-
     function handleClose() {
         setIsOpen(!isOpen);
     }
@@ -78,7 +68,7 @@ function Dashboard() {
     };
 
     const validationSchema = yup.object({
-        title: yup.string().min(3).max(150).required().trim(),
+        title: yup.string().min(5).max(150).required().trim(),
     });
 
     const onSubmit = async (values, props) => {
@@ -103,6 +93,16 @@ function Dashboard() {
             })
                 .then(async (res) => {
                     let response = await res.json();
+                    if (response.note.archive != 0) {
+                        setIsLoading(false);
+                        initialValues.title = "";
+                        initialValues.body = "";
+                        initialValues.visible = 0;
+                        initialValues.archive = 0;
+                        setIsOpen(!open);
+                        return toastSuccess(response.message);
+                    }
+                    setAllNotes((oldData) => [response.note, ...oldData]);
                     initialValues.title = "";
                     initialValues.body = "";
                     initialValues.visible = 0;
@@ -112,14 +112,56 @@ function Dashboard() {
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    toastError(error.message);
                     setIsLoading(false);
+                    return toastError(error.message);
                 });
         } catch (error) {
-            toastError(error.message);
             setIsLoading(false);
+            return toastError(error.message);
         }
     };
+
+    const handleDelete = async (slug) => {
+        try {
+            setIsLoading(true);
+
+            fetch(`${import.meta.env.VITE_API_URL}notes/${slug}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `${auth.type} ${auth.token}`,
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Credentials": true,
+                },
+            })
+                .then(async (res) => {
+                    let response = await res.json();
+                    const data = allNotes.filter((note) => note.slug != slug);
+                    setAllNotes(data);
+                    setIsLoading(false);
+                    return toastSuccess(response.message);
+                })
+                .catch((error) => {
+                    setIsLoading(false);
+                    return toastError(error.message);
+                });
+        } catch (error) {
+            setIsLoading(false);
+            return toastError(error.message);
+        }
+    };
+
+    useEffect(() => {
+        if (allNotes.length === 0) {
+            setAllNotes(getAllNotes);
+        }
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [getAllNotes]);
+
     return (
         <>
             {isOpen && (
@@ -159,7 +201,14 @@ function Dashboard() {
                         <Skeleton />
                     </>
                 ) : (
-                    allNotes.map((note) => <Card {...note} key={note.id} />)
+                    allNotes.map((note) => (
+                        <Card
+                            {...note}
+                            key={note.id}
+                            auth={auth}
+                            handleDelete={handleDelete}
+                        />
+                    ))
                 )}
             </div>
         </>
