@@ -15,6 +15,7 @@ function useLogout() {
                     Accept: "Application/json",
                     "Content-Type": "application/json",
                     Authorization: `${type} ${token}`,
+                    "Access-Control-Allow-Credentials": true,
                 },
             }).then(async (res) => {
                 let data = await res.json();
