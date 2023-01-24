@@ -32,7 +32,9 @@ function Dashboard() {
                         Authorization: `${auth.type} ${auth.token}`,
                         "Content-Type": "application/json",
                         Accept: "application/json",
-                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Origin": "http://127.0.0.1:5173/",
+                        "Access-Control-Allow-Headers": "*",
+                        "Access-Control-Allow-Credentials": true,
                     },
                 })
                     .then(async (res) => {
@@ -77,9 +79,6 @@ function Dashboard() {
 
     const validationSchema = yup.object({
         title: yup.string().min(3).max(150).required().trim(),
-        // body: yup.required(),
-        // visible: yup.boolean().required(),
-        // archive: yup.boolean().required(),
     });
 
     const onSubmit = async (values, props) => {

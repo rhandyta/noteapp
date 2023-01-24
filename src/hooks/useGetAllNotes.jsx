@@ -14,7 +14,9 @@ function useGetAllNotes({ setIsLoading }) {
                     Authorization: `${auth.type} ${auth.token}`,
                     "Content-Type": "application/json",
                     Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Origin": "http://127.0.0.1:5173/",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Credentials": true,
                 },
             }).then(async (res) => {
                 let tmpNotes = [];
@@ -34,9 +36,7 @@ function useGetAllNotes({ setIsLoading }) {
     };
 
     useEffect(() => {
-        return () => {
-            getAllNote();
-        };
+        getAllNote();
     }, []);
     return notes;
 }
