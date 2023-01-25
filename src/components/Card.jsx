@@ -1,20 +1,24 @@
 import HTMLReactParser from "html-react-parser";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import iconSvg from "../utils/constant";
 import Button from "./Button";
 
-function Card({
-    title,
-    body,
-    created_at,
-    slug,
-    user,
-    handleDelete,
-    auth,
-    user_id,
-}) {
+function Card(props) {
+    const {
+        title,
+        body,
+        created_at,
+        slug,
+        user,
+        handleDelete,
+        auth,
+        user_id,
+        visible,
+        archive,
+    } = props;
+    const navigate = useNavigate();
     return (
         <article className="h-75 flex flex-col justify-between divide-y-2 rounded-md border border-slate-200  p-3 antialiased shadow-md transition-all duration-300 hover:scale-105">
             <div className="mb-2 basis-1/12">
@@ -55,6 +59,18 @@ function Card({
                             ) : (
                                 <Button
                                     className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                                    onClick={() =>
+                                        navigate(`/edit/${slug}`, {
+                                            state: {
+                                                title,
+                                                slug,
+                                                body,
+                                                user,
+                                                visible,
+                                                archive,
+                                            },
+                                        })
+                                    }
                                 >
                                     {icon.img}
                                 </Button>
