@@ -175,20 +175,27 @@ function Dashboard() {
                     isLoading={isLoading}
                 />
             )}
-            <div className={`flex items-center justify-between  `}>
+            <div
+                className={`flex flex-col-reverse items-center justify-between md:flex-row  `}
+            >
                 <Button
                     text="Add Note"
                     className=" p-2 text-white"
                     onClick={() => setIsOpen(!isOpen)}
                 />
                 <Formik>
-                    <Form>
-                        <Input
-                            name="title"
-                            className="w-44 md:w-60 xl:w-96"
-                            placeholder="Search by title"
-                        />
-                    </Form>
+                    {(props) => {
+                        return (
+                            <Form>
+                                <Input
+                                    name="title"
+                                    className="w-44 md:w-60 xl:w-96"
+                                    placeholder="Search by title"
+                                />
+                                <Button text={"Search"} className="ml-1 p-2" />
+                            </Form>
+                        );
+                    }}
                 </Formik>
             </div>
             <div
