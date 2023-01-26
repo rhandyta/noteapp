@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import Archive from "../pages/Archive";
 import Dashboard from "../pages/Dashboard";
 import Detail from "../pages/Detail";
 import Edit from "../pages/Edit";
@@ -14,6 +15,7 @@ function SetupRoutes() {
             <Route element={<PrivateRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/detail/:id" element={<Detail />} />
+                <Route path="/archive" element={<Archive />} />
                 <Route path="/edit/:id" element={<Edit />} />
             </Route>
             <Route element={<ProtectedRoute />}>

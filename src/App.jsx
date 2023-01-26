@@ -11,7 +11,7 @@ function App() {
             {location.pathname != "/" && location.pathname != "/register" ? (
                 <BreadCrumbs />
             ) : null}
-            <div className="my-5 mx-auto w-11/12 rounded-md bg-white p-5 shadow-md md:w-9/12">
+            <div className="mx-auto mt-5 w-11/12 rounded-md bg-white p-5 shadow-md md:w-9/12">
                 <SetupRoutes />
             </div>
         </main>

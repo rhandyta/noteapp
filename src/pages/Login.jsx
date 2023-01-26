@@ -28,10 +28,10 @@ function Login() {
     return (
         <>
             <div className="flex flex-col gap-1">
-                <h2 className="text-2xl font-semibold text-slate-700">
+                <h2 className="text-xl font-semibold text-slate-700">
                     Welcome to App Notes
                 </h2>
-                <p className="text-md text-lg font-medium text-slate-600">
+                <p className="text-base font-medium text-slate-600">
                     Let's login to be continue
                 </p>
             </div>

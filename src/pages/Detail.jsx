@@ -64,7 +64,8 @@ function Detail() {
                 .then(async (res) => {
                     let response = await res.json();
                     toastSuccess(response.message);
-                    navigate("/dashboard");
+                    setDeleteLoading(false);
+                    navigate(-1);
                 })
                 .catch((error) => {
                     setDeleteLoading(false);
@@ -157,13 +158,13 @@ function Detail() {
                         </div>
                     ) : (
                         icon.name === "back" && (
-                            <Link
+                            <Button
                                 key={index}
-                                to={`/`}
+                                onClick={() => navigate(-1)}
                                 className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
                             >
                                 {icon.img}
-                            </Link>
+                            </Button>
                         )
                     )
                 )}
