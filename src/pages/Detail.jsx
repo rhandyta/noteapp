@@ -3,13 +3,19 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Button from "../components/Button";
+import Spinner from "../components/Spinner";
+import { toastError, toastSuccess } from "../components/Toast";
+import iconSvg from "../utils/constant";
 
 function Detail() {
     const [isLoading, setIsLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
     const [note, setNote] = useState({});
     const auth = useSelector((auth) => auth.user);
     const { id } = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchDetail = async () => {
             setIsLoading(true);
@@ -31,15 +37,45 @@ function Detail() {
                     })
                     .catch((error) => {
                         setIsLoading(false);
+                        return toastError(error.message);
                     });
             } catch (error) {
-                console.log(error);
                 setIsLoading(false);
+                return toastError(error.message);
             }
         };
 
         fetchDetail();
     }, [id]);
+
+    const handleDelete = async (slug) => {
+        try {
+            setDeleteLoading(true);
+            await fetch(`${import.meta.env.VITE_API_URL}notes/${slug}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `${auth.type} ${auth.token}`,
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Credentials": true,
+                },
+            })
+                .then(async (res) => {
+                    let response = await res.json();
+                    toastSuccess(response.message);
+                    navigate("/dashboard");
+                })
+                .catch((error) => {
+                    setDeleteLoading(false);
+                    return toastError(error.message);
+                });
+        } catch (error) {
+            setDeleteLoading(false);
+            return toastError(error.message);
+        }
+    };
+
     return isLoading ? (
         <article className="flex h-full max-w-sm animate-pulse flex-col justify-between rounded-md p-3 antialiased transition-all duration-300 hover:scale-105">
             <div className="mb-2 flex basis-1/12 items-center justify-start">
@@ -74,6 +110,63 @@ function Detail() {
             </div>
             <div className="mt-4 text-lg leading-relaxed">
                 {HTMLReactParser(`${note.body}`)}
+            </div>
+            <div className="flex basis-2/12 items-center justify-evenly gap-2 px-40 pt-2 md:justify-center md:px-20">
+                {iconSvg.map((icon, index) =>
+                    note.user_id === auth.user.id ? (
+                        <div key={index}>
+                            {icon.name == "back" ? (
+                                <Link
+                                    to={`/`}
+                                    className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                                >
+                                    {icon.img}
+                                </Link>
+                            ) : icon.name === "trash" ? (
+                                deleteLoading ? (
+                                    <Spinner />
+                                ) : (
+                                    <Button
+                                        className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                                        onClick={() => handleDelete(note.slug)}
+                                    >
+                                        {icon.img}
+                                    </Button>
+                                )
+                            ) : (
+                                icon.name === "edit" && (
+                                    <Button
+                                        className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                                        onClick={() =>
+                                            navigate(`/edit/${note.slug}`, {
+                                                state: {
+                                                    title: note.title,
+                                                    slug: note.slug,
+                                                    body: note.body,
+                                                    user: note.user,
+                                                    visible: note.visible,
+                                                    archive: note.archive,
+                                                },
+                                            })
+                                        }
+                                    >
+                                        {icon.img}
+                                    </Button>
+                                )
+                            )}
+                        </div>
+                    ) : (
+                        icon.name === "back" && (
+                            <Link
+                                key={index}
+                                to={`/`}
+                                className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                            >
+                                {icon.img}
+                            </Link>
+                        )
+                    )
+                )}
             </div>
         </div>
     );

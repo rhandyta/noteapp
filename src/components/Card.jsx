@@ -57,23 +57,25 @@ function Card(props) {
                                     {icon.img}
                                 </Button>
                             ) : (
-                                <Button
-                                    className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
-                                    onClick={() =>
-                                        navigate(`/edit/${slug}`, {
-                                            state: {
-                                                title,
-                                                slug,
-                                                body,
-                                                user,
-                                                visible,
-                                                archive,
-                                            },
-                                        })
-                                    }
-                                >
-                                    {icon.img}
-                                </Button>
+                                icon.name === "edit" && (
+                                    <Button
+                                        className={`flex h-7 w-7 items-center justify-center rounded-md p-1 ${icon.bg} group cursor-pointer text-white transition duration-300 hover:scale-90`}
+                                        onClick={() =>
+                                            navigate(`/edit/${slug}`, {
+                                                state: {
+                                                    title,
+                                                    slug,
+                                                    body,
+                                                    user,
+                                                    visible,
+                                                    archive,
+                                                },
+                                            })
+                                        }
+                                    >
+                                        {icon.img}
+                                    </Button>
+                                )
                             )}
                         </div>
                     ) : (
