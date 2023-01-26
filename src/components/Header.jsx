@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import Button from "./Button";
 import Spinner from "./Spinner";
@@ -10,6 +10,7 @@ function Header() {
     const [isLoading, setIsLoading] = useState(false);
     const logout = useLogout();
     const auth = useSelector((state) => state.user);
+    const pathname = useLocation();
 
     const handlerLogout = async () => {
         setIsLoading(true);
@@ -47,6 +48,22 @@ function Header() {
                         Notes App
                     </h1>
                 </Link>
+
+                <div className="flex gap-1">
+                    <NavLink
+                        to={"/dashboard"}
+                        className={`text-slate-2xl group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50`}
+                    >
+                        <p className="group-hover:text-sky-400">Dashboard</p>
+                    </NavLink>
+                    <NavLink
+                        to={"/archive"}
+                        className={`text-slate-2xl group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50`}
+                    >
+                        <p className="group-hover:text-sky-400">Archive</p>
+                    </NavLink>
+                </div>
+
                 <div className="flex items-center justify-center gap-3">
                     <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div>
                     <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div>
