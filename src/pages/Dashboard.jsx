@@ -40,78 +40,37 @@ function Dashboard() {
         const windowPixel = window.innerHeight;
         const height = document.documentElement.scrollHeight;
         if (top + windowPixel + 1 >= height) {
-            console.log(searchRef.current.value === "");
             if (!loadedPages.includes(page)) {
                 setLoadedPages([...loadedPages, page]);
-                console.log(page);
-                if (searchRef.current.value === "") {
-                    fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
-                        method: "GET",
-                        headers: {
-                            Authorization: `${auth.type} ${auth.token}`,
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
-                            "Access-Control-Allow-Origin":
-                                "http://127.0.0.1:5173/",
-                            "Access-Control-Allow-Headers": "*",
-                            "Access-Control-Allow-Credentials": true,
-                        },
+
+                fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `${auth.type} ${auth.token}`,
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "Access-Control-Allow-Origin": "http://127.0.0.1:5173/",
+                        "Access-Control-Allow-Headers": "*",
+                        "Access-Control-Allow-Credentials": true,
+                    },
+                })
+                    .then(async (res) => {
+                        const newData = [];
+                        let { notes } = await res.json();
+                        notes.data.forEach((n) => {
+                            if (!allNotes.find((note) => note.id === n.id)) {
+                                newData.push(n);
+                            }
+                        });
+                        setAllNotes((oldN) => [...oldN, ...newData]);
+                        setIsLoading(false);
                     })
-                        .then(async (res) => {
-                            const newData = [];
-                            let { notes } = await res.json();
-                            notes.data.forEach((n) => {
-                                if (
-                                    !allNotes.find((note) => note.id === n.id)
-                                ) {
-                                    newData.push(n);
-                                }
-                            });
-                            setAllNotes((oldN) => [...oldN, ...newData]);
-                            setIsLoading(false);
-                        })
-                        .catch((error) => {
-                            setIsLoading(false);
-                            return toastError(error.message);
-                        });
-                } else {
-                    fetch(
-                        `${
-                            import.meta.env.VITE_API_URL
-                        }notes/search?page=${page}`,
-                        {
-                            method: "GET",
-                            headers: {
-                                Authorization: `${auth.type} ${auth.token}`,
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                                "Access-Control-Allow-Origin":
-                                    "http://127.0.0.1:5173/",
-                                "Access-Control-Allow-Headers": "*",
-                                "Access-Control-Allow-Credentials": true,
-                            },
-                        }
-                    )
-                        .then(async (res) => {
-                            const newData = [];
-                            let { notes } = await res.json();
-                            notes.data.forEach((n) => {
-                                if (
-                                    !allNotes.find((note) => note.id === n.id)
-                                ) {
-                                    newData.push(n);
-                                }
-                            });
-                            setAllNotes((oldN) => [...oldN, ...newData]);
-                            setIsLoading(false);
-                        })
-                        .catch((error) => {
-                            setIsLoading(false);
-                            return toastError(error.message);
-                        });
-                }
-                page += 1;
+                    .catch((error) => {
+                        setIsLoading(false);
+                        return toastError(error.message);
+                    });
             }
+            page += 1;
         }
     }
 
@@ -200,7 +159,6 @@ function Dashboard() {
     };
 
     const handleSearch = async (values) => {
-        page = 1;
         try {
             setIsLoading(true);
             await fetch(
@@ -221,8 +179,9 @@ function Dashboard() {
             )
                 .then(async (res) => {
                     let { notes } = await res.json();
-                    setAllNotes([...notes.data]);
+                    setAllNotes([...notes]);
                     setIsLoading(false);
+                    values.title = "";
                 })
                 .catch((error) => {
                     setIsLoading(false);
