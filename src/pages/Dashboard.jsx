@@ -10,6 +10,7 @@ import { toastError, toastSuccess } from "../components/Toast";
 import { useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import { useRef } from "react";
+import DataNotFound from "../components/DataNotFound";
 
 function Dashboard() {
     const auth = useSelector((auth) => auth.user);
@@ -39,7 +40,10 @@ function Dashboard() {
         const top = document.documentElement.scrollTop;
         const windowPixel = window.innerHeight;
         const height = document.documentElement.scrollHeight;
-        if (top + windowPixel + 1 >= height) {
+        console.log("top=> ", top);
+        console.log("top=> ", windowPixel);
+        console.log("height=> ", height);
+        if (top + windowPixel + 1 > height) {
             if (!loadedPages.includes(page)) {
                 setLoadedPages([...loadedPages, page]);
 
@@ -182,6 +186,7 @@ function Dashboard() {
                     setAllNotes([...notes]);
                     setIsLoading(false);
                     values.title = "";
+                    window.scrollTo(0, 0);
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -254,26 +259,32 @@ function Dashboard() {
                     }}
                 </Formik>
             </div>
-            <div
-                className={`mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3`}
-            >
-                {isLoading ? (
-                    <>
-                        <Skeleton />
-                        <Skeleton />
-                        <Skeleton />
-                    </>
-                ) : (
-                    allNotes.map((note) => (
-                        <Card
-                            {...note}
-                            key={note.id}
-                            auth={auth}
-                            handleDelete={handleDelete}
-                        />
-                    ))
-                )}
-            </div>
+            {
+                <div>
+                    {isLoading ? (
+                        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                            <Skeleton />
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    ) : allNotes.length === 0 ? (
+                        <DataNotFound />
+                    ) : (
+                        <div
+                            className={`mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3`}
+                        >
+                            {allNotes.map((note) => (
+                                <Card
+                                    {...note}
+                                    key={note.id}
+                                    auth={auth}
+                                    handleDelete={handleDelete}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            }
         </>
     );
 }
