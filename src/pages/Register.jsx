@@ -1,38 +1,74 @@
-import { Formik, Form, ErrorMessage } from "formik";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { ErrorMessage, Form, Formik } from "formik";
 import * as yup from "yup";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Spinner from "../components/Spinner";
-import useLogin from "../hooks/useLogin";
+import { useState } from "react";
+import { toastError, toastSuccess } from "../components/Toast";
 
-function Login() {
-    const login = useLogin();
+function Register() {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const initialValues = {
+        name: "",
         email: "",
         password: "",
     };
 
     const validationSchema = yup.object({
-        email: yup.string().email().required().trim(),
+        name: yup.string().required().min(5).max(40).uppercase().trim(),
+        email: yup.string().required().email(),
         password: yup.string().required().min(3),
+        confirmPassword: yup
+            .string()
+            .required("confirm password is a required field")
+            .min(3, "confirm password must be at least 3 characters")
+            .oneOf([yup.ref("password"), null], "Password must match"),
     });
 
     const onSubmit = async (values, props) => {
-        setIsLoading(true);
-        await login(values.email, values.password);
-        setIsLoading(false);
+        try {
+            setIsLoading(true);
+            const { name, email, password } = values;
+            await fetch(`${import.meta.env.VITE_API_URL}register`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password,
+                }),
+            })
+                .then(async (res) => {
+                    let response = await res.json();
+                    toastSuccess(response.message);
+                    setIsLoading(false);
+                    return navigate("/");
+                })
+                .catch((error) => {
+                    setIsLoading(false);
+                    toastError(error.messages);
+                });
+        } catch (error) {
+            setIsLoading(false);
+            toastError(error.messages);
+        }
     };
     return (
         <>
             <div className="flex flex-col gap-1">
                 <h2 className="text-2xl font-semibold text-slate-700">
-                    Welcome to App Notes
+                    Register to App Notes
                 </h2>
                 <p className="text-md text-lg font-medium text-slate-600">
-                    Let's login to be continue
+                    Let's register to be login
                 </p>
             </div>
 
@@ -48,6 +84,27 @@ function Login() {
                                 autoComplete="off"
                                 className="flex flex-col gap-3"
                             >
+                                <div className="">
+                                    <label
+                                        htmlFor="name"
+                                        className="text-base text-slate-600"
+                                    >
+                                        Full Name
+                                    </label>
+                                    <Input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        className="trasition block w-full rounded border border-third p-1 outline-none duration-300 focus:ring-1 focus:ring-secondary"
+                                    />
+                                    <ErrorMessage name="name">
+                                        {(error) => (
+                                            <span className="text-xs text-red-600">
+                                                {error}
+                                            </span>
+                                        )}
+                                    </ErrorMessage>
+                                </div>
                                 <div className="">
                                     <label
                                         htmlFor="email"
@@ -90,6 +147,27 @@ function Login() {
                                         )}
                                     </ErrorMessage>
                                 </div>
+                                <div className="">
+                                    <label
+                                        htmlFor="confirmPassword"
+                                        className="text-base text-slate-600"
+                                    >
+                                        Confirm Password
+                                    </label>
+                                    <Input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        className="block w-full rounded border border-third  p-1 outline-none transition duration-300 focus:ring-1 focus:ring-secondary"
+                                    />
+                                    <ErrorMessage name="confirmPassword">
+                                        {(error) => (
+                                            <span className="text-xs text-red-600">
+                                                {error}
+                                            </span>
+                                        )}
+                                    </ErrorMessage>
+                                </div>
                                 <div className="mt-3">
                                     {isLoading ? (
                                         <Spinner className="flex items-center justify-center" />
@@ -103,17 +181,17 @@ function Login() {
                                                 !props.dirty
                                             }
                                         >
-                                            Login
+                                            Register
                                         </Button>
                                     )}
 
                                     <p className="mt-6 text-sm font-thin text-slate-400">
-                                        Don't have account?{" "}
+                                        Have account?{" "}
                                         <Link
-                                            to="/register"
+                                            to="/"
                                             className="font-normal text-sky-500"
                                         >
-                                            Register now
+                                            Log in now
                                         </Link>
                                     </p>
                                 </div>
@@ -126,4 +204,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;

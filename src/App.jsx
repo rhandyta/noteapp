@@ -1,5 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import Header from "./components/Header";
 import SetupRoutes from "./routes/SetupRoutes";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,8 +8,10 @@ function App() {
     return (
         <main className="flex min-h-screen  w-full flex-col bg-four">
             <Header />
-            {location.pathname != "/" && "register" ? <BreadCrumbs /> : null}
-            <div className="mx-auto w-11/12 rounded-md bg-white p-5 shadow-md md:w-9/12">
+            {location.pathname != "/" && location.pathname != "/register" ? (
+                <BreadCrumbs />
+            ) : null}
+            <div className="my-5 mx-auto w-11/12 rounded-md bg-white p-5 shadow-md md:w-9/12">
                 <SetupRoutes />
             </div>
         </main>
