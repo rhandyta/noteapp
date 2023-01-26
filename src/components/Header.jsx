@@ -28,7 +28,9 @@ function Header() {
                     to={"/"}
                     className="pointer flex items-center justify-center gap-1"
                 >
-                    <div className="h-8 w-8 rounded-md md:h-10 md:w-10">
+                    <div
+                        className={`hidden h-8 w-8 rounded-md md:block md:h-10 md:w-10`}
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -51,7 +53,7 @@ function Header() {
                     </div>
                 </Link>
 
-                {URL.pathname == "/" && "/register" ? (
+                {url.pathname !== "/" && url.pathname !== "/register" ? (
                     <div className="flex gap-1">
                         <NavLink
                             to={"/dashboard"}
