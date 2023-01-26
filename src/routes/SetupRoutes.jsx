@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import Detail from "../pages/Detail";
 import Edit from "../pages/Edit";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoute";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -17,6 +18,7 @@ function SetupRoutes() {
             </Route>
             <Route element={<ProtectedRoute />}>
                 <Route index element={<Login />} />
+                <Route path="/register" element={<Register />} />
             </Route>
         </Routes>
     );
