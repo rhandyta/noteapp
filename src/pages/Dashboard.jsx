@@ -40,7 +40,7 @@ function Dashboard() {
         const top = document.documentElement.scrollTop;
         const windowPixel = window.innerHeight;
         const height = document.documentElement.scrollHeight;
-        if (top + windowPixel + 1 > height) {
+        if (top + windowPixel + 1 >= height) {
             if (!loadedPages.includes(page)) {
                 setLoadedPages([...loadedPages, page]);
                 fetch(`${import.meta.env.VITE_API_URL}notes?page=${page}`, {
