@@ -34,8 +34,8 @@ function Edit() {
                 slug: state.slug,
                 title: values.title,
                 body: values.body,
-                visible: values.visible == 0 ? 0 : 1,
-                archive: values.archive == 0 ? 0 : 1,
+                visible: parseInt(values.visible),
+                archive: parseInt(values.archive),
             };
             setIsLoading(true);
             await fetch(`${import.meta.env.VITE_API_URL}notes/${state.slug}`, {
@@ -54,7 +54,7 @@ function Edit() {
                     let resp = await res.json();
                     toastSuccess(resp.message);
                     setIsLoading(false);
-                    return navigate("/", { replace: true });
+                    return navigate("/archive", { replace: true });
                 })
                 .catch((error) => {
                     setIsLoading(false);
@@ -175,47 +175,111 @@ function Edit() {
                                             </div>
                                         </div>
                                         <div className="mb-2 flex flex-row items-center gap-5">
-                                            <div className="flex items-center">
-                                                <Input
-                                                    checked={
-                                                        props.initialValues
-                                                            .visible === 1
-                                                            ? "checked"
-                                                            : null
-                                                    }
-                                                    id="default-checkbox"
-                                                    type="checkbox"
+                                            <div className="flex flex-col items-center">
+                                                {/* <Input
+                                                    id="visible"
+                                                    type="radio"
                                                     name="visible"
-                                                    value="1"
                                                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                                                />
-                                                <label
-                                                    htmlFor="default-checkbox"
+                                                /> */}
+
+                                                {/* <label
+                                                    htmlFor="visible"
                                                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                                                 >
                                                     Invisible
-                                                </label>
+                                                </label> */}
+                                                {/* 
+                                                <label
+                                                    for="visible"
+                                                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Invisible
+                                                </label> */}
+                                                <Input
+                                                    as="select"
+                                                    id="visible"
+                                                    name="visible"
+                                                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                                >
+                                                    <option
+                                                        defaultValue=""
+                                                        disabled
+                                                    >
+                                                        Choose a visible
+                                                    </option>
+                                                    <option
+                                                        value="0"
+                                                        selected={
+                                                            initialValues.visible ==
+                                                            0
+                                                                ? "selected"
+                                                                : null
+                                                        }
+                                                    >
+                                                        Visible
+                                                    </option>
+                                                    <option
+                                                        value="1"
+                                                        selected={
+                                                            initialValues.visible ==
+                                                            0
+                                                                ? "selected"
+                                                                : null
+                                                        }
+                                                    >
+                                                        Invisible
+                                                    </option>
+                                                </Input>
                                             </div>
                                             <div className="flex items-center">
-                                                <Input
-                                                    checked={
-                                                        props.initialValues
-                                                            .archive === 1
-                                                            ? "checked"
-                                                            : null
-                                                    }
-                                                    id="checked-checkbox"
-                                                    type="checkbox"
+                                                {/* <Input
+                                                    id="archive"
+                                                    type="radio"
                                                     name="archive"
-                                                    value="1"
                                                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                                                />
-                                                <label
-                                                    htmlFor="checked-checkbox"
+                                                /> */}
+                                                {/* <label
+                                                    htmlFor="archive"
                                                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                                                 >
                                                     Archive
-                                                </label>
+                                                </label> */}
+                                                <Input
+                                                    as="select"
+                                                    id="archive"
+                                                    name="archive"
+                                                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                                                >
+                                                    <option
+                                                        defaultValue=""
+                                                        disabled
+                                                    >
+                                                        Choose a archive
+                                                    </option>
+                                                    <option
+                                                        value="0"
+                                                        selected={
+                                                            initialValues.archive ==
+                                                            0
+                                                                ? "selected"
+                                                                : null
+                                                        }
+                                                    >
+                                                        Publish
+                                                    </option>
+                                                    <option
+                                                        value="1"
+                                                        selected={
+                                                            initialValues.archive ==
+                                                            0
+                                                                ? "selected"
+                                                                : null
+                                                        }
+                                                    >
+                                                        Archive
+                                                    </option>
+                                                </Input>
                                             </div>
                                         </div>
                                     </>
