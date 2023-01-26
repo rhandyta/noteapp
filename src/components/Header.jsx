@@ -10,7 +10,7 @@ function Header() {
     const [isLoading, setIsLoading] = useState(false);
     const logout = useLogout();
     const auth = useSelector((state) => state.user);
-    const pathname = useLocation();
+    const url = useLocation();
 
     const handlerLogout = async () => {
         setIsLoading(true);
@@ -44,32 +44,38 @@ function Header() {
                         </svg>
                     </div>
 
-                    <h1 className="mt-1 h-8 text-xl font-semibold text-primary md:text-2xl md:font-bold ">
-                        Notes App
-                    </h1>
+                    <div className="mt-1 flex h-8 items-center">
+                        <h1 className="text-xl font-semibold text-primary md:text-2xl  md:font-bold ">
+                            Notes App
+                        </h1>
+                    </div>
                 </Link>
 
-                <div className="flex gap-1">
-                    <NavLink
-                        to={"/dashboard"}
-                        className={`text-slate-2xl group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50`}
-                    >
-                        <p className="group-hover:text-sky-400">Dashboard</p>
-                    </NavLink>
-                    <NavLink
-                        to={"/archive"}
-                        className={`text-slate-2xl group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50`}
-                    >
-                        <p className="group-hover:text-sky-400">Archive</p>
-                    </NavLink>
-                </div>
+                {URL.pathname == "/" && "/register" ? (
+                    <div className="flex gap-1">
+                        <NavLink
+                            to={"/dashboard"}
+                            className={`group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 text-xs font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50 md:text-base`}
+                        >
+                            <p className="group-hover:text-sky-400">
+                                Dashboard
+                            </p>
+                        </NavLink>
+                        <NavLink
+                            to={"/archive"}
+                            className={`group rounded-md border border-slate-300 bg-slate-100 py-1 px-2 text-xs font-semibold text-sky-600 shadow-sm transition duration-300 hover:scale-95 hover:bg-slate-50 md:text-base`}
+                        >
+                            <p className="group-hover:text-sky-400">Archive</p>
+                        </NavLink>
+                    </div>
+                ) : null}
 
                 <div className="flex items-center justify-center gap-3">
-                    <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div>
-                    <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div>
+                    {/* <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div>
+                    <div className="h-8 w-8 rounded-md bg-sky-400 shadow-md"></div> */}
                     {auth.user && (
                         <div className="flex items-center gap-1">
-                            <h3 className="font-base text-primary">
+                            <h3 className="font-base text-xl text-primary ">
                                 {auth.user.name}
                             </h3>
                             {isLoading ? (
@@ -85,7 +91,7 @@ function Header() {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="h-8 w-8 rotate-180"
+                                        className="h-6 w-6 rotate-180 md:h-8 md:w-8"
                                     >
                                         <path
                                             strokeLinecap="round"

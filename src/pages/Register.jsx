@@ -64,10 +64,10 @@ function Register() {
     return (
         <>
             <div className="flex flex-col gap-1">
-                <h2 className="text-2xl font-semibold text-slate-700">
+                <h2 className="text-xl font-semibold text-slate-700">
                     Register to App Notes
                 </h2>
-                <p className="text-md text-lg font-medium text-slate-600">
+                <p className="text-base font-medium text-slate-600">
                     Let's register to be login
                 </p>
             </div>
