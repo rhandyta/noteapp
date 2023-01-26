@@ -1,5 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -108,12 +109,12 @@ function Login() {
 
                                     <p className="mt-6 text-sm font-thin text-slate-400">
                                         Don't have account?{" "}
-                                        <a
-                                            href="#"
+                                        <Link
+                                            to="/register"
                                             className="font-normal text-sky-500"
                                         >
                                             Register now
-                                        </a>
+                                        </Link>
                                     </p>
                                 </div>
                             </Form>
