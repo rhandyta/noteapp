@@ -114,7 +114,7 @@ function Detail() {
             </div>
             <div className="flex basis-2/12 items-center justify-evenly gap-2 px-40 pt-2 md:justify-center md:px-20">
                 {iconSvg.map((icon, index) =>
-                    note.user_id === auth.user.id ? (
+                    note.user_id == auth.user.id ? (
                         <div key={index}>
                             {icon.name == "back" ? (
                                 <Link
