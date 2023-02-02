@@ -18,6 +18,7 @@ function Card(props) {
         visible,
         archive,
     } = props;
+    console.log(user_id === auth.user.id);
     const navigate = useNavigate();
     return (
         <article className="h-75 flex flex-col justify-between divide-y-2 rounded-md border border-slate-200  p-3 antialiased shadow-md transition-all duration-300 hover:scale-105">
