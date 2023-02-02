@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import DataNotFound from "../components/DataNotFound";
 import Skeleton from "../components/Skeleton";
+import { toastError, toastSuccess } from "../components/Toast";
 import useGetAllArchive from "../hooks/useGetAllArchive";
 
 function Archive() {
+    const navigate = useNavigate();
     const auth = useSelector((state) => state.user);
     const [isLoading, setIsLoading] = useState(false);
     const { archiveNotes, error } = useGetAllArchive({ setIsLoading });
@@ -25,6 +28,7 @@ function Archive() {
                 },
             })
                 .then(async (res) => {
+                    console.log("OKOKOK");
                     let response = await res.json();
                     toastSuccess(response.message);
                     setIsLoading(false);
