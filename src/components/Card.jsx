@@ -18,7 +18,6 @@ function Card(props) {
         visible,
         archive,
     } = props;
-    console.log(user_id == auth.user.id);
     const navigate = useNavigate();
     return (
         <article className="h-75 flex flex-col justify-between divide-y-2 rounded-md border border-slate-200  p-3 antialiased shadow-md transition-all duration-300 hover:scale-105">
@@ -41,7 +40,7 @@ function Card(props) {
             </div>
             <div className="flex basis-2/12 items-center justify-evenly gap-2 px-40 pt-2 md:px-20">
                 {iconSvg.map((icon, index) =>
-                    user_id === auth.user.id ? (
+                    user_id == auth.user.id ? (
                         <div key={index}>
                             {icon.name == "eye" ? (
                                 <Link
